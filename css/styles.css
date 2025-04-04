@@ -68,6 +68,12 @@ nav ul li a:hover {
     color: #fafadc;
 }
 
+/* ===== CORRECCIÓN: ENLACE ACTIVO EN BLANCO ===== */
+nav a.active {
+    font-weight: bold;
+    color: white !important;
+}
+
 /* ==================== MENÚ DESPLEGABLE ==================== */
 .submenu,
 .submenu-item {
@@ -121,7 +127,6 @@ nav ul li a:hover {
 .submenu-item.open .submenu-content {
     display: block;
 }
-
 
 /* ==================== INFO EXTRA (ENVÍOS, CONTACTO, ETC.) ==================== */
 .info-extra {
@@ -434,4 +439,31 @@ a[href*="productos.html"] {
 
 a[href*="productos.html"]:hover {
     text-decoration: underline;
+}
+
+/* ==================== PRODUCTO INDIVIDUAL ==================== */
+.producto-detalle {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #fafadc;
+    border: 2px solid #777e54;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.producto-detalle img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+nav a.active:visited {
+    color: white !important;
+}
+
+.submenu > a.activo {
+    color: white !important;
 }

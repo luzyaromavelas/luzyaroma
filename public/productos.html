@@ -10,22 +10,43 @@
             const secciones = ['frasco', 'decorativas'];
             secciones.forEach(seccion => {
                 const div = document.getElementById(seccion);
-                if (div) div.style.display = (seccion === id) ? 'flex' : 'none';
+                if (div) div.style.display = (id === 'todos' || seccion === id) ? 'flex' : 'none';
             });
         }
 
-        function manejarCambioHash() {
+        window.onload = function () {
             const hash = window.location.hash.substring(1);
             if (hash === 'decorativas') {
                 mostrarSeccion('decorativas');
-            } else {
+            } else if (hash === 'frasco') {
                 mostrarSeccion('frasco');
+            } else {
+                mostrarSeccion('todos');
             }
-        }
 
-        window.onload = manejarCambioHash;
-        window.onhashchange = manejarCambioHash;
+            // Marcar el menú "Productos" como activo
+            const productosLink = document.querySelector('a[href="productos.html"]');
+            if (productosLink) {
+                productosLink.classList.add('active');
+            }
+        };
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'decorativas' || hash === 'frasco') {
+                mostrarSeccion(hash);
+            } else {
+                mostrarSeccion('todos');
+            }
+        });
     </script>
+    <style>
+        /* Podés mover esto a tu CSS */
+        nav a.active {
+            font-weight: bold;
+            color: #c95c8d;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,13 +58,13 @@
         <ul>
             <li><a href="../index.html">Inicio</a></li>
             <li class="submenu">
-                <a href="#">Productos</a>
+                <a href="productos.html">Productos</a>
                 <ul class="submenu-content">
                     <li class="submenu-item">
                         <a href="#">Velas de Soja</a>
                         <ul class="submenu-content">
-                            <li><a href="#frasco">Velas en Frasco</a></li>
-                            <li><a href="#decorativas">Velas Decorativas</a></li>
+                            <li><a href="productos.html#frasco">Velas en Frasco</a></li>
+                            <li><a href="productos.html#decorativas">Velas Decorativas</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -58,7 +79,9 @@
 
 <div id="frasco" class="productos" style="display: none;">
     <div class="producto">
-        <img src="../assets/vela1.jpg" alt="Vela en Frasco">
+        <a href="producto1.html">
+            <img src="../assets/vela1.jpg" alt="Vela en Frasco">
+        </a>
         <p>Vela en Frasco - $500</p>
         <button class="agregar-carrito" data-nombre="Vela en Frasco" data-precio="500">Agregar al carrito</button>
     </div>
@@ -66,7 +89,9 @@
 
 <div id="decorativas" class="productos" style="display: none;">
     <div class="producto">
-        <img src="../assets/vela22.jpg" alt="Vela Decorativa">
+        <a href="producto2.html">
+            <img src="../assets/vela22.jpg" alt="Vela Decorativa">
+        </a>
         <p>Vela Decorativa - $450</p>
         <button class="agregar-carrito" data-nombre="Vela Decorativa" data-precio="450">Agregar al carrito</button>
     </div>
