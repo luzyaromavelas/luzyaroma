@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos - LUZ Y AROMA</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <script>
+        function mostrarSeccion(id) {
+            const secciones = ['frasco', 'decorativas'];
+            secciones.forEach(seccion => {
+                const div = document.getElementById(seccion);
+                if (div) div.style.display = (seccion === id) ? 'flex' : 'none';
+            });
+        }
+
+        function manejarCambioHash() {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'decorativas') {
+                mostrarSeccion('decorativas');
+            } else {
+                mostrarSeccion('frasco');
+            }
+        }
+
+        window.onload = manejarCambioHash;
+        window.onhashchange = manejarCambioHash;
+    </script>
 </head>
 <body>
 
@@ -21,8 +42,8 @@
                     <li class="submenu-item">
                         <a href="#">Velas de Soja</a>
                         <ul class="submenu-content">
-                            <li><a href="productos.html">Velas en Frasco</a></li>
-                            <li><a href="productos.html">Velas Decorativas</a></li>
+                            <li><a href="#frasco">Velas en Frasco</a></li>
+                            <li><a href="#decorativas">Velas Decorativas</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -35,16 +56,23 @@
 
 <h2>🕯️ Nuestros Productos</h2>
 
-<div class="productos">
+<div id="frasco" class="productos" style="display: none;">
     <div class="producto">
         <img src="../assets/vela1.jpg" alt="Vela en Frasco">
         <p>Vela en Frasco - $500</p>
+        <button class="agregar-carrito" data-nombre="Vela en Frasco" data-precio="500">Agregar al carrito</button>
     </div>
+</div>
+
+<div id="decorativas" class="productos" style="display: none;">
     <div class="producto">
         <img src="../assets/vela22.jpg" alt="Vela Decorativa">
         <p>Vela Decorativa - $450</p>
+        <button class="agregar-carrito" data-nombre="Vela Decorativa" data-precio="450">Agregar al carrito</button>
     </div>
 </div>
+
+<script src="../js/carrito.js"></script>
 
 <footer>
     <p>&copy; 2025 LUZ Y AROMA - Todos los derechos reservados.</p>

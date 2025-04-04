@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
 
-/* Estilos generales */
+/* ==================== ESTILOS GENERALES ==================== */
 body {
     font-family: Arial, sans-serif;
     background-color: #fafadc;
@@ -16,7 +16,7 @@ body {
     min-height: 100vh;
 }
 
-/* Estilos para el encabezado */
+/* ==================== ENCABEZADO Y LOGO ==================== */
 header {
     background-color: #777e54;
     padding: 30px 0;
@@ -28,7 +28,6 @@ header {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Contenedor del logo */
 .logo-container {
     position: absolute;
     top: 50%;
@@ -41,7 +40,7 @@ header {
     height: auto;
 }
 
-/* Estilos para la barra de navegación */
+/* ==================== MENÚ DE NAVEGACIÓN ==================== */
 nav ul {
     list-style: none;
     padding: 0;
@@ -69,12 +68,14 @@ nav ul li a:hover {
     color: #fafadc;
 }
 
-/* Menú desplegable */
-.submenu {
+/* ==================== MENÚ DESPLEGABLE ==================== */
+.submenu,
+.submenu-item {
     position: relative;
 }
 
-.submenu .submenu-content {
+.submenu .submenu-content,
+.submenu-item .submenu-content {
     display: none;
     position: absolute;
     top: 100%;
@@ -87,12 +88,14 @@ nav ul li a:hover {
     z-index: 1000;
 }
 
-.submenu .submenu-content li {
-    padding: 10px;
+.submenu .submenu-content li,
+.submenu-item .submenu-content li {
+    padding: 0px;
     text-align: left;
 }
 
-.submenu .submenu-content li a {
+.submenu .submenu-content li a,
+.submenu-item .submenu-content li a {
     color: #777e54;
     display: block;
     width: 100%;
@@ -100,14 +103,10 @@ nav ul li a:hover {
     transition: background 0.3s ease;
 }
 
-.submenu .submenu-content li a:hover {
+.submenu .submenu-content li a:hover,
+.submenu-item .submenu-content li a:hover {
     background: #777e54;
     color: white;
-}
-
-/* Submenú anidado */
-.submenu-item {
-    position: relative;
 }
 
 .submenu-item .submenu-content {
@@ -116,12 +115,15 @@ nav ul li a:hover {
     margin-left: 5px;
 }
 
-.submenu:hover > .submenu-content,
-.submenu-item:hover > .submenu-content {
+.submenu:hover>.submenu-content,
+.submenu-item:hover>.submenu-content,
+.submenu.open .submenu-content,
+.submenu-item.open .submenu-content {
     display: block;
 }
 
-/* Sección de info extra */
+
+/* ==================== INFO EXTRA (ENVÍOS, CONTACTO, ETC.) ==================== */
 .info-extra {
     display: flex;
     justify-content: center;
@@ -136,7 +138,7 @@ nav ul li a:hover {
     text-align: center;
 }
 
-/* Footer */
+/* ==================== PIE DE PÁGINA ==================== */
 footer {
     background-color: transparent;
     color: #777e54;
@@ -144,7 +146,7 @@ footer {
     margin-top: auto;
 }
 
-/* Responsive */
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
     .logo-container {
         left: 10px;
@@ -159,7 +161,7 @@ footer {
     }
 }
 
-/* Banner */
+/* ==================== BANNER ==================== */
 .banner {
     display: flex;
     justify-content: center;
@@ -174,7 +176,7 @@ footer {
     border-radius: 40px;
 }
 
-/* Título beneficios */
+/* ==================== TÍTULO DE BENEFICIOS ==================== */
 .titulo-beneficios {
     display: flex;
     align-items: center;
@@ -197,7 +199,7 @@ footer {
     margin: 0 15px;
 }
 
-/* Caja de beneficios */
+/* ==================== CAJA DE BENEFICIOS ==================== */
 .beneficios-box {
     background-color: #fafadc;
     border: 2px solid #777e54;
@@ -219,7 +221,7 @@ footer {
     margin-right: 10px;
 }
 
-/* Imágenes de productos */
+/* ==================== PRODUCTOS ==================== */
 .productos {
     display: flex;
     justify-content: center;
@@ -243,7 +245,7 @@ footer {
     border-radius: 10px;
 }
 
-/* Contenedor general en dos columnas sin separación */
+/* ==================== SOBRE NOSOTROS ==================== */
 .sobre-nosotros-container {
     display: flex;
     flex-direction: row;
@@ -256,21 +258,18 @@ footer {
     max-width: 1000px;
 }
 
-/* Cuadro de texto estilo beneficios */
 .sobre-nosotros-box {
     background-color: #fafadc;
     border: 2px solid #777e54;
     border-radius: 0 0 0 15px;
     padding: 30px;
     text-align: left;
-    box-shadow: none;
     font-family: 'Playfair Display', serif;
     font-size: 17px;
     color: #444;
     flex: 1;
 }
 
-/* Título dentro del cuadro */
 .sobre-nosotros-box h3 {
     color: #777e54;
     text-align: center;
@@ -278,7 +277,6 @@ footer {
     font-size: 24px;
 }
 
-/* Imagen al costado del cuadro */
 .imagen-nosotros {
     flex: 1;
     display: flex;
@@ -291,4 +289,149 @@ footer {
     height: 100%;
     object-fit: cover;
     border-radius: 0 15px 15px 0;
+}
+
+/* ==================== DESTACADOS ==================== */
+.destacados {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.destacado {
+    background-color: #fafadc;
+    border: 2px solid #777e54;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.destacado img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* ==================== BOTÓN AGREGAR AL CARRITO ==================== */
+.agregar-carrito {
+    background-color: #777e54;
+    color: #fafadc;
+    border: none;
+    padding: 8px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.agregar-carrito:hover {
+    background-color: #5e6443;
+}
+
+/* ==================== CARRITO DE COMPRAS ==================== */
+#tabla-carrito {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fafadc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#tabla-carrito th,
+#tabla-carrito td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+    color: #444;
+}
+
+#tabla-carrito th {
+    background-color: #777e54;
+    color: #fafadc;
+    font-weight: bold;
+}
+
+#tabla-carrito tr:last-child td {
+    border-bottom: none;
+}
+
+.cantidad-select {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #777e54;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.input-notas {
+    width: 90%;
+    height: 60px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #777e54;
+    border-radius: 5px;
+    resize: vertical;
+    background-color: #fffaf0;
+}
+
+.eliminar-btn {
+    background-color: #e57373;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.eliminar-btn:hover {
+    background-color: #c44;
+}
+
+#total-carrito {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #777e54;
+    margin: 20px 0;
+}
+
+/* ==================== BOTÓN WHATSAPP ==================== */
+button[onclick*="generarEnlaceWhatsApp"] {
+    display: block;
+    margin: 0 auto;
+    background-color: #25d366;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s;
+}
+
+button[onclick*="generarEnlaceWhatsApp"]:hover {
+    background-color: #1ebc59;
+}
+
+/* ==================== LINK VOLVER A PRODUCTOS ==================== */
+a[href*="productos.html"] {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+    color: #777e54;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a[href*="productos.html"]:hover {
+    text-decoration: underline;
 }
