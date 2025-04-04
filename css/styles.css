@@ -49,6 +49,7 @@ nav ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap; /* Añadido para que se ajuste bien en móviles */
 }
 
 nav ul li {
@@ -158,11 +159,61 @@ footer {
     }
 
     nav ul {
-        flex-direction: column;
+        /* Se mantiene horizontal */
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    nav ul li {
+        padding: 10px 12px;
+    }
+
+    .submenu .submenu-content,
+    .submenu-item .submenu-content {
+        position: static;
+        background-color: #fafadc;
+        box-shadow: none;
+        border: 1px solid #777e54;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .submenu-item .submenu-content {
+        margin-left: 0;
+    }
+
+    .submenu .submenu-content li a,
+    .submenu-item .submenu-content li a {
+        padding: 12px;
     }
 
     .sobre-nosotros-container {
         flex-direction: column;
+    }
+
+    .imagen-nosotros img {
+        border-radius: 0 0 15px 15px;
+        max-height: 300px;
+        object-fit: cover;
+    }
+
+    .producto-detalle {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    #tabla-carrito {
+        font-size: 14px;
+    }
+
+    #tabla-carrito th,
+    #tabla-carrito td {
+        padding: 8px;
+    }
+
+    footer {
+        font-size: 14px;
     }
 }
 
@@ -467,83 +518,3 @@ nav a.active:visited {
 .submenu > a.activo {
     color: white !important;
 }
-
-/* ==================== RESPONSIVE MEJORADO PARA MÓVILES ==================== */
-@media (max-width: 768px) {
-    /* Header y logo */
-    header {
-        padding: 15px 0;
-    }
-
-    .logo-container {
-        position: static;
-        transform: none;
-        margin-bottom: 10px;
-    }
-
-    .logo-container img {
-        width: 70px;
-    }
-
-    /* Menú vertical */
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    nav ul li {
-        padding: 10px 0;
-    }
-
-    .submenu .submenu-content,
-    .submenu-item .submenu-content {
-        position: static;
-        background-color: #fafadc;
-        box-shadow: none;
-        border: 1px solid #777e54;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .submenu-item .submenu-content {
-        margin-left: 0;
-    }
-
-    .submenu .submenu-content li a,
-    .submenu-item .submenu-content li a {
-        padding: 12px;
-    }
-
-    /* Sobre nosotros */
-    .sobre-nosotros-container {
-        flex-direction: column;
-    }
-
-    .imagen-nosotros img {
-        border-radius: 0 0 15px 15px;
-        max-height: 300px;
-        object-fit: cover;
-    }
-
-    /* Producto detalle */
-    .producto-detalle {
-        margin: 20px;
-        padding: 15px;
-    }
-
-    /* Carrito */
-    #tabla-carrito {
-        font-size: 14px;
-    }
-
-    #tabla-carrito th,
-    #tabla-carrito td {
-        padding: 8px;
-    }
-
-    /* Footer */
-    footer {
-        font-size: 14px;
-    }
-}
-
