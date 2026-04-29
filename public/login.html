@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login Admin</title>
+
+<style>
+body {
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #777e54;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h3>🔐 Admin Login</h3>
+
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="pass" placeholder="Password">
+
+  <button onclick="login()">Entrar</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAKsAvJQYo4Y0gVZnoie-a2HVTRE5Gnduw",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d",
+  storageBucket: "luzyaroma3d.firebasestorage.app",
+  messagingSenderId: "346859225051",
+  appId: "1:346859225051:web:7270fb075145d39edc71fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login = async function () {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("pass").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    window.location.href = "admin.html";
+  } catch (e) {
+    alert("Error: " + e.message);
+  }
+};
+</script>
+
+</body>
+</html>

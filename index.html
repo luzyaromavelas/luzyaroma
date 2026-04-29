@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUZ Y AROMA</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="assets/logo.jpg" alt="Logo Luz y Aroma">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html" class="active">Inicio</a></li>
+
+      <li class="submenu">
+        <a href="public/productos.html">Productos</a>
+        <ul class="submenu-content" id="menu-categorias"></ul>
+      </li>
+
+      <li>
+        <a href="public/carrito.html" id="link-carrito">Carrito (0)</a>
+      </li>
+
+      <li><a href="public/sobre-nosotros.html">Sobre Nosotros</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- BANNER -->
+<div class="banner">
+  <img src="assets/banner.jpeg" alt="Banner Luz y Aroma">
+</div>
+
+<!-- BENEFICIOS -->
+<div class="titulo-beneficios">
+  <span>Beneficios de las velas de soja</span>
+</div>
+
+<div class="beneficios-box">
+  <p>🌱 100% naturales</p>
+  <p>♻️ Ecológicas y sostenibles</p>
+  <p>⏳ Duran más</p>
+  <p>🚫 Sin humo negro</p>
+  <p>✨ Mejor aroma</p>
+</div>
+
+<!-- DESTACADOS -->
+<h2 class="titulo-beneficios">Destacados</h2>
+
+<div id="productos-firebase" class="destacados"></div>
+
+<!-- INFO -->
+<div class="info-extra">
+  <div class="info-item">🤍 Envíos en Córdoba Capital</div>
+  <div class="info-item">🤍 Transferencia y efectivo</div>
+  <div class="info-item">🤍 WhatsApp: 5493456541139</div>
+</div>
+
+<footer>
+  <p>&copy; 2025 LUZ Y AROMA</p>
+</footer>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// =========================
+// 🔥 CATEGORIAS DINAMICAS
+// =========================
+async function cargarCategorias() {
+  const contenedor = document.getElementById("menu-categorias");
+  contenedor.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "Categorias"));
+
+  snap.forEach(doc => {
+    const c = doc.data();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="public/productos.html?cat=${c.slug}">
+        ${c.nombre}
+      </a>
+    `;
+
+    contenedor.appendChild(li);
+  });
+}
+
+// =========================
+// ⭐ DESTACADOS (2 POR CATEGORIA)
+// =========================
+async function cargarProductos() {
+  const contenedor = document.getElementById("productos-firebase");
+  contenedor.innerHTML = "";
+
+  const snapProductos = await getDocs(collection(db, "Productos"));
+  const snapCategorias = await getDocs(collection(db, "Categorias"));
+
+  const productos = [];
+  snapProductos.forEach(doc => productos.push(doc.data()));
+
+  const categorias = [];
+  snapCategorias.forEach(doc => categorias.push(doc.data()));
+
+  categorias.forEach(cat => {
+    // 🔥 filtrar productos de esa categoria
+    const filtrados = productos
+      .filter(p => p.categoria === cat.slug)
+      .slice(0, 2); // 👈 SOLO 2
+
+    filtrados.forEach(p => {
+      const div = document.createElement("div");
+      div.classList.add("destacado");
+
+      div.innerHTML = `
+        <img src="${p.imagen}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+        <p>$${p.precio}</p>
+      `;
+
+      contenedor.appendChild(div);
+    });
+  });
+}
+
+// =========================
+// CARRITO HEADER
+// =========================
+function actualizarCarrito() {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+
+  const link = document.getElementById("link-carrito");
+  if (link) link.textContent = `Carrito (${total})`;
+}
+
+// 🔥 INIT
+cargarCategorias();
+cargarProductos();
+actualizarCarrito();
+
+window.addEventListener("storage", actualizarCarrito);
+</script>
+
+</body>
+</html>

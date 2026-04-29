@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Admin - LUZ Y AROMA</title>
+<link rel="stylesheet" href="../css/styles.css">
+
+<style>
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+header {
+  background: #777e54;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.logout {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+  background: #777e54;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button:hover { opacity: 0.9; }
+
+.producto-admin {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.producto-admin img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.acciones {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.acciones button {
+  font-size: 12px;
+  padding: 6px;
+}
+
+.edit { background: #444; }
+
+.categoria-item {
+  display: flex;
+  justify-content: space-between;
+  background: #eee;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  🛠 Admin LUZ Y AROMA
+  <button class="logout" onclick="logout()">Salir</button>
+</header>
+
+<div class="container">
+
+<!-- PRODUCTOS -->
+<div class="card">
+  <h3>Agregar / Editar producto</h3>
+
+  <input id="nombre" placeholder="Nombre">
+  <input id="precio" type="number" placeholder="Precio">
+
+  <select id="categoria"></select>
+
+  <input id="imagen" placeholder="URL imagen">
+  <input id="stock" type="number" placeholder="Stock disponible">
+
+  <!-- 🔥 NUEVO -->
+  <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+
+  <button onclick="agregar()">Guardar producto</button>
+</div>
+
+<div class="card">
+  <h3>Productos</h3>
+  <div id="lista"></div>
+</div>
+
+<!-- CATEGORIAS -->
+<div class="card">
+  <h3>Gestionar Categorías</h3>
+
+  <input id="cat-nombre" placeholder="Nombre (ej: Velas en Frasco)">
+  <input id="cat-slug" placeholder="Slug (ej: frasco)">
+
+  <button onclick="crearCategoria()">Crear categoría</button>
+
+  <div id="lista-categorias"></div>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDocs,
+  deleteDoc, doc, updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getAuth, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAKsAvJQYo4Y0gVZnoie-a2HVTRE5Gnduw",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d",
+  storageBucket: "luzyaroma3d.firebasestorage.app",
+  messagingSenderId: "346859225051",
+  appId: "1:346859225051:web:7270fb075145d39edc71fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, user => {
+  if (!user) location.href = "login.html";
+});
+
+const nombreInput = document.getElementById("nombre");
+const precioInput = document.getElementById("precio");
+const categoriaInput = document.getElementById("categoria");
+const imagenInput = document.getElementById("imagen");
+const stockInput = document.getElementById("stock");
+const descripcionInput = document.getElementById("descripcion");
+
+// =========================
+// CATEGORIAS
+// =========================
+async function cargarCategorias() {
+  const select = document.getElementById("categoria");
+  const lista = document.getElementById("lista-categorias");
+
+  select.innerHTML = "";
+  lista.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "Categorias"));
+
+  snap.forEach(d => {
+    const c = d.data();
+
+    const opt = document.createElement("option");
+    opt.value = c.slug;
+    opt.textContent = c.nombre;
+    select.appendChild(opt);
+
+    const div = document.createElement("div");
+    div.className = "categoria-item";
+
+    div.innerHTML = `
+      ${c.nombre} (${c.slug})
+      <button onclick="eliminarCategoria('${d.id}')">X</button>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+window.crearCategoria = async () => {
+  const nombre = document.getElementById("cat-nombre").value.trim();
+  const slug = document.getElementById("cat-slug").value.trim();
+
+  if (!nombre || !slug) return alert("Completa todo");
+
+  await addDoc(collection(db, "Categorias"), { nombre, slug });
+
+  document.getElementById("cat-nombre").value = "";
+  document.getElementById("cat-slug").value = "";
+
+  cargarCategorias();
+};
+
+window.eliminarCategoria = async (id) => {
+  await deleteDoc(doc(db, "Categorias", id));
+  cargarCategorias();
+};
+
+// =========================
+// PRODUCTOS
+// =========================
+window.agregar = async function () {
+  const nombre = nombreInput.value.trim();
+  const precio = Number(precioInput.value);
+  const categoria = categoriaInput.value;
+  const imagen = imagenInput.value.trim();
+  const stock = Number(stockInput.value);
+  const descripcion = descripcionInput.value.trim(); // 🔥
+
+  if (!nombre || !precio || !imagen || isNaN(stock))
+    return alert("Completa todos los campos correctamente");
+
+  await addDoc(collection(db, "Productos"), {
+    nombre,
+    precio,
+    categoria,
+    imagen,
+    stock,
+    descripcion // 🔥 guardamos
+  });
+
+  limpiar();
+  cargar();
+};
+
+function limpiar() {
+  nombreInput.value = "";
+  precioInput.value = "";
+  imagenInput.value = "";
+  stockInput.value = "";
+  descripcionInput.value = "";
+}
+
+async function cargar() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "Productos"));
+
+  snap.forEach(d => {
+    const p = d.data();
+
+    const div = document.createElement("div");
+    div.className = "producto-admin";
+
+    div.innerHTML = `
+      <img src="${p.imagen}">
+      <div>
+        <b>${p.nombre}</b><br>
+        $${p.precio}<br>
+        Stock: ${p.stock ?? 0}<br>
+        ${p.categoria}
+      </div>
+
+      <div class="acciones">
+        <button class="edit"
+          onclick="editar('${d.id}','${p.nombre}','${p.precio}','${p.imagen}','${p.categoria}','${p.stock}','${p.descripcion || ""}')">
+          Editar
+        </button>
+        <button onclick="eliminar('${d.id}')">Eliminar</button>
+      </div>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+window.eliminar = async (id) => {
+  await deleteDoc(doc(db, "Productos", id));
+  cargar();
+};
+
+window.editar = async (id, nombre, precio, imagen, categoria, stock, descripcion) => {
+
+  const nNombre = prompt("Nombre", nombre);
+  const nPrecio = Number(prompt("Precio", precio));
+  const nImagen = prompt("Imagen", imagen);
+  const nCategoria = prompt("Categoria", categoria);
+  const nStock = Number(prompt("Stock", stock));
+  const nDescripcion = prompt("Descripción", descripcion); // 🔥
+
+  if (!nNombre || !nPrecio || !nImagen || isNaN(nStock)) return;
+
+  await updateDoc(doc(db, "Productos", id), {
+    nombre: nNombre,
+    precio: nPrecio,
+    imagen: nImagen,
+    categoria: nCategoria,
+    stock: nStock,
+    descripcion: nDescripcion // 🔥
+  });
+
+  cargar();
+};
+
+window.logout = async () => {
+  await signOut(auth);
+  location.href = "login.html";
+};
+
+cargar();
+cargarCategorias();
+</script>
+
+</body>
+</html>

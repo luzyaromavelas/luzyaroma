@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Productos - LUZ Y AROMA</title>
+<link rel="stylesheet" href="../css/styles.css">
+
+<style>
+.productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.producto {
+  background: #fafadc;
+  border: 1px solid #777e54;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.producto img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.producto button {
+  margin-top: auto;
+  padding: 10px;
+  width: 100%;
+  background: #777e54;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.producto button:disabled {
+  background: gray;
+}
+
+.agotado {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="../assets/logo.jpg" alt="Logo">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="../index.html">Inicio</a></li>
+
+      <li class="submenu">
+        <a href="#">Productos ▾</a>
+        <ul class="submenu-content" id="menu-categorias"></ul>
+      </li>
+
+      <li><a href="carrito.html" id="link-carrito">Carrito (0)</a></li>
+      <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+    </ul>
+  </nav>
+</header>
+
+<h2 class="titulo-productos">🕯️ Nuestros Productos</h2>
+
+<div id="productos-firebase" class="productos"></div>
+
+<footer>
+  <p>&copy; 2025 LUZ Y AROMA</p>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let productos = [];
+
+const params = new URLSearchParams(window.location.search);
+const categoria = params.get("cat");
+
+// =========================
+// CATEGORIAS
+// =========================
+async function cargarCategorias() {
+  const cont = document.getElementById("menu-categorias");
+  cont.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "Categorias"));
+
+  snap.forEach(doc => {
+    const c = doc.data();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="productos.html?cat=${c.slug}">
+        ${c.nombre}
+      </a>
+    `;
+
+    cont.appendChild(li);
+  });
+}
+
+// =========================
+// PRODUCTOS
+// =========================
+async function cargar() {
+  const snap = await getDocs(collection(db, "Productos"));
+
+  productos = [];
+  snap.forEach(d => productos.push({ id: d.id, ...d.data() }));
+
+  render();
+  actualizarCarrito();
+}
+
+function render() {
+  const cont = document.getElementById("productos-firebase");
+  cont.innerHTML = "";
+
+  let filtrados = productos;
+
+  if (categoria) {
+    filtrados = productos.filter(p => p.categoria === categoria);
+  }
+
+  filtrados.forEach(p => {
+
+    const sinStock = !p.stock || p.stock <= 0;
+
+    const div = document.createElement("div");
+    div.className = "producto";
+
+    div.innerHTML = `
+      <div style="position:relative;">
+        <a href="producto.html?id=${p.id}">
+          <img src="${p.imagen}" style="${sinStock ? 'opacity:0.4;filter:grayscale(1)' : ''}">
+        </a>
+        ${sinStock ? `<div class="agotado">AGOTADO</div>` : ""}
+      </div>
+
+      <h3>${p.nombre}</h3>
+      <p>$${p.precio}</p>
+      <p>Stock: ${p.stock ?? 0}</p>
+
+      <button ${sinStock ? "disabled" : ""}>
+        ${sinStock ? "Sin stock" : "Agregar"}
+      </button>
+    `;
+
+    const btn = div.querySelector("button");
+
+    if (!sinStock) {
+      btn.onclick = () => {
+        agregarAlCarrito(p);
+      };
+    }
+
+    cont.appendChild(div);
+  });
+}
+
+// =========================
+// CARRITO
+// =========================
+function agregarAlCarrito(p) {
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  const exist = carrito.find(x => x.nombre === p.nombre);
+
+  if (exist) exist.cantidad++;
+  else carrito.push({
+    nombre: p.nombre,
+    precio: p.precio,
+    cantidad: 1,
+    imagen: p.imagen
+  });
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+
+  actualizarCarrito();
+
+  alert("Agregado 🛒");
+}
+
+function actualizarCarrito() {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const total = carrito.reduce((a, p) => a + p.cantidad, 0);
+
+  const link = document.getElementById("link-carrito");
+  if (link) link.textContent = `Carrito (${total})`;
+}
+
+// =========================
+// INIT
+// =========================
+cargarCategorias();
+cargar();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const submenu = document.querySelector(".submenu");
+
+  submenu.addEventListener("click", (e) => {
+    if (e.target.tagName === "A" && e.target.nextElementSibling) {
+      e.preventDefault();
+      submenu.classList.toggle("open");
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!submenu.contains(e.target)) {
+      submenu.classList.remove("open");
+    }
+  });
+});
+</script>
+
+</body>
+</html>

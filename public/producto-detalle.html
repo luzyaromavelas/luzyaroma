@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Detalle del Producto - LUZ Y AROMA</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-container">
+            <img src="../assets/logo.jpg" alt="Logo" />
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li class="submenu">
+                    <a href="productos.html" class="active">Productos</a>
+                    <ul class="submenu-content">
+                        <li class="submenu-item">
+                            <a href="#">Velas de Soja</a>
+                            <ul class="submenu-content">
+                                <li><a href="productos.html#frasco">Velas en Frasco</a></li>
+                                <li><a href="productos.html#decorativas">Velas Decorativas</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu-item"><a href="productos.html#bandejas">Bandejas</a></li>
+                        <li class="submenu-item"><a href="productos.html#combos">Combos</a></li>
+                    </ul>
+                </li>
+                <a href="carrito.html" id="link-carrito">Carrito (0)</a>
+                <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Detalle del Producto -->
+    <main class="producto-detalle">
+        <div class="producto-imagen">
+            <img src="" alt="Imagen del Producto" id="imagen-producto">
+        </div>
+        <div class="producto-info">
+            <h2 id="nombre-producto">Nombre</h2>
+            <p class="descripcion" id="descripcion-producto">Descripción</p>
+            <p class="precio" id="precio-producto">$0</p>
+
+            <button class="agregar-carrito" id="btn-agregar-carrito">Agregar al Carrito</button>
+            <button class="volver" id="btn-volver">Volver a Seguir Comprando</button>
+        </div>
+    </main>
+
+    <!-- Pie de Página -->
+    <footer>
+        <p>&copy; 2025 Luz & Aroma - Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Script para cargar datos del producto -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const producto = urlParams.get('producto');
+
+            const nombreElem = document.getElementById('nombre-producto');
+            const descElem = document.getElementById('descripcion-producto');
+            const precioElem = document.getElementById('precio-producto');
+            const imagenElem = document.getElementById('imagen-producto');
+            const btnAgregar = document.getElementById('btn-agregar-carrito');
+            const btnVolver = document.getElementById('btn-volver');
+
+                const productos = {
+    vela1: {
+        nombre: 'Vela Tennessee',
+        precio: 10000,
+        descripcion: 'Sencilla y elegante, ideal para cualquier espacio.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela1.jpg'
+    },
+    vela2: {
+        nombre: 'Vela en Cuenco de Madera',
+        precio: 8500,
+        descripcion: 'Vela de 9 cm, natural y decorativa, aporta un toque rústico y armonioso a tus espacios.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela2.jpg'
+    },
+    vela3: {
+        nombre: 'Vela Circus',
+        precio: 3500,
+        descripcion: 'Vela moderna y artesanal, su diseño decorativo la convierte en el detalle perfecto para realzar cualquier rincón.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela3.jpg'
+    },
+    vela4: {
+        nombre: 'Vela Cuenco de Madera',
+        precio: 8300,
+        descripcion: 'Vela de 8 cm, natural y decorativa, aporta un toque rústico y armonioso a tus espacios.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela4.jpg'
+    },
+    vela5: {
+        nombre: 'Vela Bubble Grande',
+        precio: 7000,
+        descripcion: 'Divertida y original, ideal para regalar y darle un toque distinto a tu ambiente.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela5.jpg'
+    },
+    vela55: {
+        nombre: 'Vela Bubble Chica',
+        precio: 2800,
+        descripcion: 'Divertida y original, ideal para regalar y darle un toque distinto a tu ambiente.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela55.jpg'
+    },
+    vela6: {
+        nombre: 'Vela Love',
+        precio: 6500,
+        descripcion: 'Delicada y romántica, perfecta para regalar o ambientar con amor.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela6.jpg'
+    },
+    vela7: {
+        nombre: 'Vela Peonía',
+        precio: 5500,
+        descripcion: 'Elegante y floral, combina belleza y aroma en una pieza única.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela7.jpg'
+    },
+    vela8: {
+        nombre: 'Osito',
+        precio: 3000,
+        descripcion: 'Dulce y encantadora, un detalle que enamora a primera vista.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela8.jpg'
+    },
+    vela9: {
+        nombre: 'Vela Margarita',
+        precio: 1500,
+        descripcion: 'Fresca y delicada, aporta un toque natural a cualquier ambiente.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/vela9.jpg'
+    },
+    com1: {
+        nombre: 'Combo Box Corazón',
+        precio: 1,
+        descripcion: '¿Buscás un regalo único y con un toque especial? Nuestra box con visor de corazón es perfecta para esta ocasión.<br><br>Podés armarla a tu gusto con las velas que quieras.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/com1.jpg'
+    },
+    com3: {
+        nombre: 'Combo Regalo Especial',
+        precio: 1,
+        descripcion: '¿Buscás un regalo único y con un toque especial? Nuestra box con visor es perfecta para esta ocasión.<br><br>Incluye vela Circus y Peonía.<br><br><strong>Aromas:</strong> Vainilla & coco, jazmín, flores blancas, lavanda, mango.<br><br>(Podés detallar en el carrito tu elección).',
+        imagen: '../assets/com3.jpg'
+    },
+    bande1: {
+        nombre: 'Bandeja de Yeso',
+        precio: 4500,
+        descripcion: 'Elegante y funcional, con diseño detallado. Es ideal para decorar y organizar tus espacios.<br><br>Medida: 18 x 9,5 cm.',
+        imagen: '../assets/bande1.jpg'
+    }
+};
+
+            const prod = productos[producto];
+            if (prod) {
+                nombreElem.textContent = prod.nombre;
+                descElem.innerHTML = prod.descripcion;
+                precioElem.textContent = `$${prod.precio}`;
+                imagenElem.src = prod.imagen;
+
+                btnAgregar.addEventListener("click", () => {
+                    agregarAlCarrito(prod.nombre, prod.precio);
+                });
+            }
+
+            btnVolver.addEventListener("click", () => {
+                window.history.back();
+            });
+        });
+    </script>
+
+<script src="../js/carrito.js"></script>
+</body>
+</html>

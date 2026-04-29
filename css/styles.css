@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
+
+/* ==================== BASE ==================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fafadc;
+    background-image: url('../assets/fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ==================== HEADER ==================== */
+header {
+    background-color: #777e54;
+    padding: 30px 0;
+    text-align: center;
+    color: white;
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 120px;
+    transform: translateY(-50%);
+}
+
+.logo-container img {
+    width: 90px;
+}
+
+/* ==================== NAV ==================== */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #777e54;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    padding: 15px 20px;
+    position: relative;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ==================== SUBMENU ==================== */
+.submenu-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fafadc;
+    min-width: 180px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.submenu:hover .submenu-content {
+    display: block;
+}
+
+.submenu-content li a {
+    color: #777e54;
+    display: block;
+    padding: 10px;
+}
+
+.submenu-content li a:hover {
+    background: #777e54;
+    color: white;
+}
+
+/* ==================== BANNER ==================== */
+.banner {
+    display: flex;
+    justify-content: center;
+    margin: 50px auto;
+    width: 95%;
+}
+
+.banner img {
+    width: 100%;
+    border-radius: 40px;
+}
+
+/* ==================== BENEFICIOS ==================== */
+.titulo-beneficios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px auto 20px;
+    width: 80%;
+    color: #777e54;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+}
+
+.titulo-beneficios::before,
+.titulo-beneficios::after {
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid #777e54;
+    margin: 0 15px;
+}
+
+.beneficios-box {
+    background: #fafadc;
+    border: 2px solid #777e54;
+    border-radius: 15px;
+    padding: 20px 30px;
+    max-width: 450px;
+    margin: 20px auto;
+    font-family: 'Playfair Display', serif;
+    color: #444;
+}
+
+/* ==================== PRODUCTOS ==================== */
+.productos,
+.destacados {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.producto,
+.destacado {
+    background: #fafadc;
+    border: 1px solid #777e54;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+}
+
+.producto img,
+.destacado img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* ==================== INFO ==================== */
+.info-extra {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: #777e54;
+    color: white;
+    padding: 20px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+/* ==================== FOOTER ==================== */
+footer {
+    text-align: center;
+    color: #777e54;
+    padding: 15px;
+    margin-top: auto;
+}
+
+/* ==================== CARRITO ==================== */
+#tabla-carrito {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #fafadc;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#tabla-carrito th,
+#tabla-carrito td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ==================== SOBRE NOSOTROS (ARREGLADO) ==================== */
+.sobre-nosotros-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.sobre-nosotros-box,
+.imagen-nosotros {
+    flex: 1;
+    min-width: 300px;
+}
+
+.sobre-nosotros-box {
+    background: #fafadc;
+    border: 2px solid #777e54;
+    border-radius: 15px 0 0 15px;
+    padding: 30px;
+    font-family: 'Playfair Display', serif;
+    color: #444;
+}
+
+.sobre-nosotros-box h3 {
+    text-align: center;
+    color: #777e54;
+}
+
+.imagen-nosotros {
+    display: flex;
+}
+
+.imagen-nosotros img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 15px 15px 0;
+}
+
+/* RESPONSIVE SOBRE NOSOTROS */
+@media (max-width: 768px) {
+    .sobre-nosotros-container {
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .sobre-nosotros-box {
+        border-radius: 15px 15px 0 0;
+    }
+
+    .imagen-nosotros img {
+        border-radius: 0 0 15px 15px;
+        height: auto;
+    }
+}
+/* =========================
+   FIX MENU CLICK MOBILE
+========================= */
+.submenu-content {
+  display: none;
+}
+
+.submenu:hover .submenu-content {
+  display: block;
+}
+
+.submenu.open .submenu-content {
+  display: block;
+}
+
+/* evita que se rompa click en mobile */
+.submenu > a {
+  cursor: pointer;
+}
+
+/* seguridad layout productos */
+.productos {
+  align-items: stretch;
+}

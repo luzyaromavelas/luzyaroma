@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sobre Nosotros - LUZ Y AROMA</title>
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="../assets/logo.jpg" alt="Logo">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="../index.html">Inicio</a></li>
+
+      <!-- 🔥 MENU DINAMICO -->
+      <li class="submenu">
+        <a href="productos.html">Productos</a>
+        <ul class="submenu-content" id="menu-categorias"></ul>
+      </li>
+
+      <li><a href="carrito.html" id="link-carrito">Carrito (0)</a></li>
+      <li><a href="sobre-nosotros.html" class="active">Sobre Nosotros</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="sobre-nosotros-container">
+
+  <div class="sobre-nosotros-box">
+    <h3>✨ Sobre Nosotros</h3>
+        <p>En <strong>LUZ Y AROMA</strong>, creamos velas de soja con amor y dedicación...</p>
+        <p>Creemos en el poder de la luz y los aromas...</p>
+        <p>En <strong>LUZ Y AROMA</strong>, creamos velas de soja con amor y dedicación. Cada una de nuestras velas está hecha a mano, con ingredientes naturales y fragancias cuidadosamente seleccionadas para llenar tu espacio de calma y bienestar.</p>
+        <p>Creemos en el poder de la luz y los aromas para transformar momentos, acompañarte en tu rutina y brindarte un momento único de serenidad. Nuestro compromiso es ofrecerte productos sostenibles, de calidad y con un toque especial que haga de cada vela una experiencia única.</p>
+        <p><strong>Gracias por iluminar tu vida con nosotros. ✨🕯️</strong></p>
+  </div>
+
+  <div class="imagen-nosotros">
+    <img src="../assets/sobre-nosotros.jpg" alt="Tienda">
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2025 LUZ Y AROMA</p>
+</footer>
+
+<script src="../js/carrito.js"></script>
+
+<!-- 🔥 CATEGORIAS DINAMICAS -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function cargarCategorias() {
+  const contenedor = document.getElementById("menu-categorias");
+  contenedor.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "Categorias"));
+
+  snap.forEach(doc => {
+    const c = doc.data();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="productos.html?cat=${c.slug}">
+        ${c.nombre}
+      </a>
+    `;
+
+    contenedor.appendChild(li);
+  });
+}
+
+cargarCategorias();
+</script>
+
+</body>
+</html>

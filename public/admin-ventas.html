@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Ventas - LUZ Y AROMA</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+  margin:0;
+}
+
+header{
+  background:#777e54;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:15px;
+  margin-bottom:15px;
+  border-radius:10px;
+}
+
+.pedido{
+  border-left:4px solid #777e54;
+  padding-left:10px;
+}
+
+.total{
+  font-weight:bold;
+  color:#333;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+📊 Dashboard de Ventas
+</header>
+
+<div class="container" id="ventas"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "luzyaroma3d.firebaseapp.com",
+  projectId: "luzyaroma3d",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function cargarVentas(){
+    const cont = document.getElementById("ventas");
+    cont.innerHTML = "";
+
+    const snap = await getDocs(collection(db, "Pedidos"));
+
+    snap.forEach(doc => {
+        const p = doc.data();
+
+        const div = document.createElement("div");
+        div.className = "card";
+
+        let productosHTML = "";
+
+        p.productos.forEach(prod => {
+            productosHTML += `
+              <div class="pedido">
+                📦 ${prod.nombre} x${prod.cantidad} - $${prod.precio}
+              </div>
+            `;
+        });
+
+        div.innerHTML = `
+          <h3>👤 ${p.cliente}</h3>
+          <p>📍 ${p.direccion}</p>
+
+          ${productosHTML}
+
+          <p class="total">💰 Total: $${p.total}</p>
+        `;
+
+        cont.appendChild(div);
+    });
+}
+
+cargarVentas();
+</script>
+
+</body>
+</html>
